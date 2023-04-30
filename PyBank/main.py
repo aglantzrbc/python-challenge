@@ -4,12 +4,17 @@ import os
 # import module for reading csv files
 import csv
 
-# create lists to store data
-total_number = []
-profit_losses = []
-
 # get data from correct path
 pybankpath = os.path.join("python-challenge", "PyBank", "Resources", "budget_data.csv")
+
+
+# initialize variables
+profloss_changes = []
+count_rows = 0
+profloss_revenue = 0
+profloss_prev = 0
+greatest_profit = {"date": "", "amount": float("-inf")}
+greatest_loss = {"date": "", "amount": float("inf")}
 
 # read csv resource file for this project
 with open(pybankpath) as pybankfile:
@@ -17,41 +22,50 @@ with open(pybankpath) as pybankfile:
     # specify delimiter and variable that holds contents of file
     pybankreader = csv.reader(pybankfile)
 
-    # add data as lists to variables
+    # exclude header row
+    header = next(pybankreader)
+
+# iterate through datafile
     for row in pybankreader:
-        total_number.append(row[0])
-        profit_losses.append(row[1])
+        date = row[0]
+        amount = int(row[1])
+        count_rows += 1
+        profloss_revenue += amount
 
-# remove header from each column
-total_number.pop(0)
-profit_losses.pop(0)
+        if profloss_prev != 0:
+            change = amount - profloss_prev
+            profloss_changes.append(change)
 
-# calculate number of months in relevant list
-total_months = int(len(total_number))
+            # calculate greatest increase in revenue
+            if change > greatest_profit["amount"]:
+                greatest_profit["date"] = date
+                greatest_profit["amount"] = change
 
-# convert profit/losses list to integer and float
-profit_lossesint = [int(entry) for entry in profit_losses]
-profit_lossesfloat = [float(entry) for entry in profit_losses]
+            # calculate greatest decrease in revenue
+            if change < greatest_loss["amount"]:
+                greatest_loss["date"] = date
+                greatest_loss["amount"] = change
+        
+        profloss_prev = profloss_revenue
 
-# sum profit/losses list
-profit_lossessum = sum(profit_lossesint)
-
-# calculate net change
-change_original = profit_lossesfloat[0]
-change_final = profit_lossesfloat[-1]
-change_net = change_final - change_original
-change_numvalues = len(profit_lossesfloat) - 1
-change_final = change_net / change_numvalues
+# average revenue change
+avg_revenue = sum(profloss_changes) / len(profloss_changes)
 
 # print title and dashed line
-print("\nFinancial Analysis")
-print("\n------------------------------\n")
+print("\nFinancial Analysis\n")
+print("------------------------------\n")
 
 # print total number of months in dataset
-print(f"Total Months: {total_months}\n")
+print(f"Total Months: {count_rows}\n")
 
 # print net total profit/losses with dollar symbol
-print(f"Total: ${profit_lossessum}\n")
+print(f"Total: ${profloss_revenue}\n")
 
-print(f"Average Change: ${change_final:.2f}\n")
+# print average change with two decimal spaces
+print(f"Average Change: ${avg_revenue}\n")
 
+# print greatest increase in profits date and (amount)
+print(f"Greatest Increase in Profits: {greatest_profit[date]} (${greatest_profit[amount]})\n")
+
+# print greatest decrease in profits date and (amount)
+print(f"Greatest Decrease in Profits: {greatest_loss[date]} (${greatest_loss[amount]})\n")
