@@ -22,22 +22,36 @@ with open(pybankpath) as pybankfile:
         total_number.append(row[0])
         profit_losses.append(row[1])
 
+# remove header from each column
 total_number.pop(0)
 profit_losses.pop(0)
-
-profit_lossesint = [int(x) for x in profit_losses]
-profit_lossessum = sum(profit_lossesint)
 
 # calculate number of months in relevant list
 total_months = int(len(total_number))
 
-# print title and dashed line with proper line spacing
+# convert profit/losses list to integer and float
+profit_lossesint = [int(entry) for entry in profit_losses]
+profit_lossesfloat = [float(entry) for entry in profit_losses]
+
+# sum profit/losses list
+profit_lossessum = sum(profit_lossesint)
+
+# calculate net change
+change_original = profit_lossesfloat[0]
+change_final = profit_lossesfloat[-1]
+change_net = change_final - change_original
+change_numvalues = len(profit_lossesfloat) - 1
+change_final = change_net / change_numvalues
+
+# print title and dashed line
 print("\nFinancial Analysis")
 print("\n------------------------------\n")
 
-# print total number of months in datasets
+# print total number of months in dataset
 print(f"Total Months: {total_months}\n")
 
-# print total number of months in datasets
+# print net total profit/losses with dollar symbol
 print(f"Total: ${profit_lossessum}\n")
+
+print(f"Average Change: ${change_final:.2f}\n")
 
