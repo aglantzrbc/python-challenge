@@ -22,14 +22,22 @@ with open(pybankpath) as pybankfile:
         total_number.append(row[0])
         profit_losses.append(row[1])
 
+total_number.pop(0)
+profit_losses.pop(0)
+
+profit_lossesint = [int(x) for x in profit_losses]
+profit_lossessum = sum(profit_lossesint)
+
 # calculate number of months in relevant list
-num_months = int(len(total_number) - 1)
+total_months = int(len(total_number))
 
 # print title and dashed line with proper line spacing
 print("\nFinancial Analysis")
 print("\n------------------------------\n")
 
-# print total number of months in dataset
-print(f"Total Months: {num_months}")
+# print total number of months in datasets
+print(f"Total Months: {total_months}\n")
 
+# print total number of months in datasets
+print(f"Total: ${profit_lossessum}\n")
 
