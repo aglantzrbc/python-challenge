@@ -46,9 +46,17 @@ for row2 in candidates_list:
         doane_counter += 1
 
 # percentage of votes counts by candidate
-stockham_percentage = (stockham_counter / counter) * 100
-degette_percentage = (degette_counter / counter) * 100
-doane_percentage = (doane_counter / counter) * 100
+stockham_percentage = round((stockham_counter / counter) * 100, 3)
+degette_percentage = round((degette_counter / counter) * 100, 3)
+doane_percentage = round((doane_counter / counter) * 100, 3)
+
+# calculate winner
+if (stockham_counter >= degette_counter) and (stockham_counter >= doane_counter):
+    winner = my_new_list[0]
+elif (degette_counter >= stockham_counter) and (degette_counter >= doane_counter):
+    winner = my_new_list[1]
+else:
+    winner = my_new_list[3]
 
 
 # print title and dashed line
@@ -60,5 +68,12 @@ print("------------------------------\n")
 print(f"Total Votes: {counter}\n")
 print("------------------------------\n")
 
-# print votes and percentage by candidate
-print(f"{my_new_list[0]}: {stockham_percentage}% ({stockham_counter})")
+# print votes and percentage by candidate and line
+print(f"{my_new_list[0]}: {stockham_percentage}% ({stockham_counter})\n")
+print(f"{my_new_list[1]}: {degette_percentage}% ({degette_counter})\n")
+print(f"{my_new_list[2]}: {doane_percentage}% ({doane_counter})\n")
+print("------------------------------\n")
+
+# print winner
+print(f"Winner: {winner}\n")
+print("------------------------------\n")
