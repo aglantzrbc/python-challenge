@@ -4,15 +4,18 @@ import os
 # import module for reading csv files
 import csv
 
-# get data from correct path
-pybankpath = os.path.join("python-challenge", "PyBank", "Resources", "budget_data.csv")
+# get data from correct path - must be the same relative location for this program to run
+pybankpath = os.path.join("Resources", "budget_data.csv")
+
+# set input and output variables for transfer
+pybankoutput = ("result_PyBank.txt")
 
 # read csv resource file for this project
 with open(pybankpath) as pybankfile:
     
     # specify delimiter and variable that holds contents of file
     pybankreader = csv.reader(pybankfile)
-
+    
     # exclude header row
     header = next(pybankreader)
 
@@ -33,16 +36,17 @@ with open(pybankpath) as pybankfile:
         count_rows += 1
         total_revenue += revenue
 
+        # start appending changes in revenue to list beginning with second value
         if prev_revenue != 0:
             change = revenue - prev_revenue
             changes.append(change)
 
-            # calculate greatest increase in revenue
+            # calculate greatest increase in revenue by testing for largest positive revenue change during iteration and adding to dictionary
             if change > greatest_increase["amount"]:
                 greatest_increase["date"] = date
                 greatest_increase["amount"] = change
 
-            # calculate greatest decrease in revenue
+            # calculate greatest decrease in revenue by testing for largest negative revenue change during iteration and adding to dictionary
             if change < greatest_decrease["amount"]:
                 greatest_decrease["date"] = date
                 greatest_decrease["amount"] = change
@@ -66,6 +70,18 @@ print(f"Total: ${total_revenue}\n")
 print(f"Average Change: ${avg_revenue:.2f}\n")
 
 # Print greatest revenue increase and greatest revenue decrease with dates
-print(f"Greatest Increase in Revenue: {greatest_increase['date']} (${greatest_increase['amount']})\n")
-print(f"Greatest Decrease in Revenue: {greatest_decrease['date']} (${greatest_decrease['amount']})\n")
-    
+print(f"Greatest Increase in Profits: {greatest_increase['date']} (${greatest_increase['amount']})\n")
+print(f"Greatest Decrease in Profits: {greatest_decrease['date']} (${greatest_decrease['amount']})\n")
+
+# Put output into an f string to send to a text file
+pybankanalysis = f"""Financial Analysis
+----------------------------
+Total Months: {count_rows}
+Total: ${total_revenue}
+Average Change: ${avg_revenue:.2f}
+Greatest Increase in Profits: {greatest_increase['date']} (${greatest_increase['amount']})
+Greatest Decrease in Profits: {greatest_decrease['date']} (${greatest_decrease['amount']})"""
+
+# Produce text file
+with open(pybankoutput, "w") as txtfile:
+    txtfile.write(pybankanalysis)
