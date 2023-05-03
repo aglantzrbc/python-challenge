@@ -4,7 +4,7 @@ import os
 # import module for reading csv files
 import csv
 
-# get data from correct path
+# get data from correct path - must be the same relative location for this program to run
 pypollpath = os.path.join("Resources", "election_data.csv")
 
 pypolloutput = ("result_PyPoll.txt")
