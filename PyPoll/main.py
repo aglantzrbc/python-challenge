@@ -5,7 +5,9 @@ import os
 import csv
 
 # get data from correct path
-pypollpath = os.path.join("python-challenge", "PyPoll", "Resources", "election_data.csv")
+pypollpath = os.path.join("Resources", "election_data.csv")
+
+pypolloutput = ("result_PyPoll.txt")
 
 # initialize variables
 candidates_list = []
@@ -77,3 +79,19 @@ print("------------------------------\n")
 # print winner
 print(f"Winner: {winner}\n")
 print("------------------------------\n")
+
+# Put output into an f string to send to a text file
+pypollanalysis = f"""Election Results
+----------------------------
+Total Votes: {counter}
+------------------------------
+{my_new_list[0]}: {stockham_percentage}% ({stockham_counter})
+{my_new_list[1]}: {degette_percentage}% ({degette_counter})
+{my_new_list[2]}: {doane_percentage}% ({doane_counter})
+------------------------------
+Winner: {winner}
+------------------------------"""
+
+# Produce text file
+with open(pypolloutput, "w") as txtfile:
+    txtfile.write(pypollanalysis)
